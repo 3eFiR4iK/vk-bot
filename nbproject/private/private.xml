@@ -5,9 +5,7 @@
         <group>
             <file>file:/C:/OpenServer/domains/vk-bot/app/User.php</file>
             <file>file:/C:/OpenServer/domains/vk-bot/app/Http/Controllers/ParseController.php</file>
-            <file>file:/C:/OpenServer/domains/vk-bot/.env</file>
             <file>file:/C:/OpenServer/domains/vk-bot/routes/web.php</file>
-            <file>file:/C:/OpenServer/domains/vk-bot/tests/TestCase.php</file>
             <file>file:/C:/OpenServer/domains/vk-bot/app/Http/Controllers/TestController.php</file>
         </group>
     </open-files>

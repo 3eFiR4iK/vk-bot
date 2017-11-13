@@ -9,7 +9,13 @@ use App\User;
 use App\Http\Controllers\ParseController as parse;
 
 class TestController extends Controller {
-
+    protected $dayoftheweek = [
+            1 => 'Понедельник',
+            2 => 'Вторник',
+            3 => 'Среда',
+            4 => 'Четверг',
+            5 => 'Пятница',
+            6 => 'Суббота'];
     protected $confirmation_token = '6ebc1af7';
     protected $token = '331d3d055b70a8548a86e36c96d2150a0e60bfe1bee967e0f9f61850918eebf9ffe39273d2ed8d021f905';
 
@@ -45,12 +51,14 @@ class TestController extends Controller {
                     $user_name = $user_info->response[0]->first_name;
                     $this->addUser($data->object->user_id, $group, $user_name);
                     $this->sendMessage('Выберете одно из возможных действий :<br> 1) расписание на сегодня<br> 2) расписание на завтра"
-                            . "<br> 3) command 3', $data->object->user_id);
+                            . "<br><br>
+                            Если хочешь получить расписание на определенный день, то напиши название дня в сокращенной форме (пн, вт, ср, чт, пт, сб)', $data->object->user_id);
                     
                 } else if($com = $this->findCommand($data->object->body, $this->getUserValue($data->object->user_id))) {
                     $this->sendMessage($com, $data->object->user_id);
                 } else {
-                    $this->sendMessage("Выберете одно из возможных действий :<br> 1) расписание на сегодня<br> 2) расписание на завтра"
+                    $this->sendMessage("Выберете одно из возможных действий :<br> 1) расписание на сегодня<br> 2) расписание на завтра<br> "
+                            . "<br>Если хочешь получить расписание на определенный день, то напиши название дня в сокращенной форме (пн, вт, ср, чт, пт, сб)"
                             , $data->object->user_id);
                 }
                 echo('ok');
@@ -113,13 +121,31 @@ class TestController extends Controller {
     )));
     }
     
+    protected function getDayOfTheWeek($offset = false) {
+        if ($offset)
+            return $this->dayoftheweek[date('w') + 1];
+        else
+            return $this->dayoftheweek[date('w')];
+    }
+    
     protected function findCommand($command,$group){
         switch($command){
             case '1' :
-                return parse::getAllSite($group);
+                return parse::getAllSite($group,$this->getDayOfTheWeek());
             case '2' :
-                return parse::getAllSite($group,true);
-           
+                return parse::getAllSite($group,$this->getDayOfTheWeek(true));
+            case 'пн' :
+               return parse::getAllSite($group,$this->dayoftheweek[1]);
+            case 'вт' :
+               return parse::getAllSite($group,$this->dayoftheweek[2]);
+            case 'ср' :
+               return parse::getAllSite($group,$this->dayoftheweek[3]);
+            case 'чт' :
+               return parse::getAllSite($group,$this->dayoftheweek[4]);
+            case 'пт' :
+               return parse::getAllSite($group,$this->dayoftheweek[5]);
+            case 'сб' :
+               return parse::getAllSite($group,$this->dayoftheweek[6]);
             default :
                 return false;
         }
