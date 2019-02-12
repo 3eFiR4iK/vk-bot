@@ -62,12 +62,15 @@ class ParseController extends Controller {
     
     protected static function getDayOfTheWeek($offset = false) {
         $dayoftheweek = [
+            0 => 'Воскресенье',
             1 => 'Понедельник',
             2 => 'Вторник',
             3 => 'Среда',
             4 => 'Четверг',
             5 => 'Пятница',
-            6 => 'Суббота'];
+            6 => 'Суббота',
+          ];
+       //dump($dayoftheweek[date('w')]);
         if ($offset)
             return $dayoftheweek[date('w') + 1];
         else
@@ -90,10 +93,18 @@ class ParseController extends Controller {
 
     protected static function getWeek($site) {
         $week = $site->find('div.rasp > p > em')->attr('class');
-        if ($week == 'up')
-            return 'dn';
-        else
+        //dump(self::getDayOfTheWeek());
+        if ($week == 'up'){
+            if(self::getDayOfTheWeek() == 'Воскресенье')
+                return 'up';
+        return 'dn';}
+        else{
+            if(self::getDayOfTheWeek() == 'Воскресенье')
+                return 'dn';
             return 'up';
+        }
+            
+            
     }
 
 }

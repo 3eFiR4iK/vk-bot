@@ -12,5 +12,4 @@
 */
 
 Route::post('/','TestController@getSite');
-Route::get('/test/{group}','ParseController@getAllSite');
 Route::get('/update','ParseController@updateGroups');
